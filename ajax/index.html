@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax</title>
+    <script src="./ajax.js"></script>
+    <script>
+        window.onload = function() {
+            // 方法1
+            // const $ = function(...args) {
+            //     return document.querySelectorAll(...args);
+            // }
+            // let submitBtn = $('#submit')[0];
+
+            // 方法2
+            // let submitBtn = document.getElementById('submit');
+
+            // 方法3
+            const $ = document.querySelectorAll.bind(document);
+            let submitBtn = $('#submit')[0];
+            submitBtn.onclick = function() {
+                let a = document.getElementsByName('a')[0].value;
+                let b = document.getElementsByName('b')[0].value;
+                ajax({
+                    type: 'post',
+                    url: './backend/post.php',
+                    dataType: 'JSON',
+                    data: {a, b},
+                    success(res) {
+                        console.log('成功了', res);
+                    },
+                    error(err) {
+                        console.log('失败了', err)
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="text" name="a">
+    <input type="text" name="b">
+    <input type="button" value="submit" id="submit">
+</body>
+</html>
