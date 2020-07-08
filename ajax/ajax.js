@@ -11,7 +11,7 @@ function ajax(options) {
     let dataArr = [];
     let strData = '';
     for (let key in data) {
-        dataArr.push(`${key}=${data[key]}`); // [key=value, key=value] 
+        dataArr.push(`${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`); // [key=value, key=value] 
     }
     strData = dataArr.join('&'); // key=value&key=value
 
