@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function show(json) {
+            let oUl = document.getElementById('oUl');
+            oUl.innerHTML = '';
+            if (json.g && json.g.length > 0) {
+                json.g.forEach(e => {
+                let oLi = document.createElement('li');
+                oLi.innerHTML = e.q;
+                console.log(oLi)
+                oUl.appendChild(oLi);
+                });
+            }
+        }
+        window.onload = function () {
+            let oTxt = document.getElementById('oTxt');
+            // let aScript = document.getElementById('aScript');
+            // oTxt.oninput = function() {
+            //     // script 一次性，无法重复赋值
+            //     aScript.src = `https://www.baidu.com/sugrec?prod=pc&wd=${oTxt.value}&cb=show`
+            // }
+            oTxt.oninput = function() {
+                let oScript = document.createElement('script');
+                oScript.src = `https://www.baidu.com/sugrec?prod=pc&wd=${encodeURIComponent(oTxt.value)}&cb=show`
+                document.body.appendChild(oScript);
+            }
+        }
+    </script>
+    <script id="aScript"></script>
+</head>
+<body>
+    <input type="text" id="oTxt">
+    <ul id="oUl"></ul>
+</body>
+</html>
