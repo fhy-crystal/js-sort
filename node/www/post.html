@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+
+</head>
+
+<body>
+    <h1>注册</h1>
+    <h1>form</h1>
+    <form action="http://localhost:8181/set" method="post">
+        用户名：<input type="text" name="user" /><br>
+        密码：<input type="password" name="pwd" /><br>
+        <input type="submit" value="submit" />
+    </form>
+    <hr>
+    <h1>ajax</h1>
+    <div>
+        用户名：<input type="text" id="user" /><br>
+        密码：<input type="password" id="pwd" /><br>
+        <input type="button" value="submit" id="submit" />
+    </div>
+
+    <script>
+        $(document).ready(() => {
+            let $user = $('#user')
+            let $pwd = $('#pwd')
+            let $submit = $('#submit')
+
+            $submit.click(function() {
+                $.ajax({
+                    url: 'http://localhost:8181/set',
+                    method: 'post',
+                    data: {
+                        user: $user.val(),
+                        pwd: $pwd.val()
+                    },
+                    success(res){
+                        console.log(res);
+                    },
+                    error(err) {
+                        console.log(err);
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
