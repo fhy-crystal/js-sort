@@ -2,6 +2,9 @@ let http = require('http');
 let fs = require('fs');
 let url = require('url');
 
+// 1.第一次：S->C: 'last-modified'
+// 2.第二次：C->S: 'if-modified-since'
+// 3.第二次：S->C: 200||304
 http.createServer((req, res) => {
     let {pathname} = url.parse(req.url);
     fs.stat(`www${pathname}`, (err, stats) => {
