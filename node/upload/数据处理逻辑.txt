@@ -1,0 +1,53 @@
+------WebKitFormBoundaryqelAxOYddoAXXMuM
+Content-Disposition: form-data; name="user"
+
+123
+------WebKitFormBoundaryqelAxOYddoAXXMuM
+Content-Disposition: form-data; name="pwd"
+
+123
+------WebKitFormBoundaryqelAxOYddoAXXMuM
+Content-Disposition: form-data; name="file"; filename="file.txt"
+Content-Type: text/plain
+
+aa
+bbb
+cccc
+------WebKitFormBoundaryqelAxOYddoAXXMuM--
+
+--------------------------------------------------------------------------------------
+
+1.
+<分隔符>\r\n<数据描述>\r\n\r\n<数据内容>\r\n
+<分隔符>\r\n<数据描述>\r\n\r\n<数据内容>\r\n
+<分隔符>\r\n<数据描述1>\r\n<数据描述2>\r\n\r\n<文件内容>\r\n
+<分隔符>--
+2.用<分隔符>拆分数据
+[
+    <Buffer >, 
+    \r\n<数据描述>\r\n\r\n<数据内容>\r\n,
+    \r\n<数据描述>\r\n\r\n<数据内容>\r\n,
+    \r\n<数据描述1>\r\n<数据描述2>\r\n\r\n<文件内容>\r\n,
+    --
+]
+3.去头去尾
+[
+    \r\n<数据描述>\r\n\r\n<数据内容>\r\n,
+    \r\n<数据描述>\r\n\r\n<数据内容>\r\n,
+    \r\n<数据描述1>\r\n<数据描述2>\r\n\r\n<文件内容>\r\n,
+]
+4.去除每一项头尾"\r\n"
+[
+    <数据描述>\r\n\r\n<数据内容>,
+    <数据描述>\r\n\r\n<数据内容>,
+    <数据描述1>\r\n<数据描述2>\r\n\r\n<文件内容>
+]
+5.用第一次"\r\n\r\n"拆分数据
+普通数据：[<数据描述>, <数据内容>]
+文件数据：[<数据描述1>\r\n<数据描述2>, <数据内容>]
+
+6.判断描述里面有没有"\r\n"
+有——文件数据：[<数据描述1>\r\n<数据描述2>, <数据内容>]
+无——普通数据：[<数据描述>, <数据内容>]
+
+7.解析数据描述
