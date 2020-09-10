@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>websocket</title>
+    <script>
+        let sock = new WebSocket('ws://localhost:8066');
+
+        sock.emit = function(name, ...args) {
+            sock.send(JSON.stringify({name: [...args]}));
+        }
+
+        sock.onopen = function() {
+            console.log('连上了');
+            sock.emit('msg', 123, 34);
+        }
+        sock.onmessage = function() {
+            console.log('有消息');
+        }
+        sock.onclose = function() {
+            console.log('断开了');
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
