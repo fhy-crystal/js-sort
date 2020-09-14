@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>formData</title>
+    <script>
+        window.onload = () => {
+            let $user = document.getElementById('user');
+            let $password = document.getElementById('password');
+            let $file = document.getElementById('file');
+            let $btn = document.getElementById('btn');
+            btn.onclick = () => {
+                let data = new FormData();
+                data.append('user', $user.value);
+                data.append('password', $password.value);
+
+                Array.from($file.files).forEach(item => {
+                    data.append('files', item);
+                })
+                
+
+                let arr = []
+                data.forEach((val, key) => {
+                    arr.push(`${encodeURIComponent(key)}=${encodeURIComponent(val)}`);
+                })
+                
+                let xhr = new XMLHttpRequest();
+
+                // get
+                // xhr.open('GET', `http://localhost:8066/login?${arr.join('&')}`);
+                // xhr.send();
+
+                // post
+                xhr.open('POST', 'http://localhost:8066/login');
+                // formData 不支持指定Content-Type
+                // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send(data);
+
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+                            console.log('success');
+                        } else {
+                            console.log('failed');
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="user"><br>
+    <input type="text" id="password"><br>
+    <input type="file" id="file" multiple><br>
+    <input type="button" value="提交" id="btn">
+
+    <form action="http://localhost:8066/login" method="post">
+        <input type="text" name="user"><br>
+        <input type="text" name="password"><br>
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>
