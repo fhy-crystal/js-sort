@@ -15,10 +15,11 @@ let server = http.createServer((req, res) => {
 
     //     res.end();
     // })
-    res.setHeader('content-encoding', 'gzip');
+    res.setHeader('Content-Encoding', 'gzip');
     let rs = fs.createReadStream(`www${req.url}`);
     let gzip = zlib.createGzip(); // 压缩
     rs.on('error', err => {
+        res.setHeader('Content-Encoding', '')
         res.writeHead(404);
         res.write('Not Found');
         res.end();
