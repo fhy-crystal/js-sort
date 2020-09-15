@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drag</title>
+    <style>
+        #box {
+            width: 400px;
+            height: 150px;
+            background-color: cornflowerblue;
+            color: midnightblue;
+            line-height: 150px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            let $box = document.getElementById('box');
+            // 拖着东西进入
+            $box.ondragenter = () => {
+                $box.innerHTML = '松手上传';
+            }
+            // 拖着东西离开
+            $box.ondragleave = () => {
+                $box.innerHTML = '请拖到这里';
+            }
+            // 悬浮: 只要鼠标还没松手并且未离开，就会一直触发
+            $box.ondragover = () => {
+                console.log('aaa');
+
+                // ondragover 不阻止默认事件，就不会触发ondrop
+                return false;
+            }
+            // 松手
+            $box.ondrop = (e) => {
+                let data = new FormData();
+                Array.from(e.dataTransfer.files).forEach(item => {
+                    data.append('files', item);
+                })
+
+                let xhr = new XMLHttpRequest();
+                // post
+                xhr.open('POST', 'http://localhost:8066/login');
+                xhr.send(data);
+
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) { 
+                            console.log('success'); 
+                        } else {
+                            console.log('failed');
+                        }
+                    }
+                }
+                // 阻止默认事件：打开文件
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="box">
+        请拖到这里
+    </div>
+</body>
+</html>
