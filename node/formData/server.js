@@ -35,7 +35,8 @@ let multerObj = multer({
 });
 app.use(multerObj.any())
 
-app.post('/login', (req, res) => {
+// 若使用进度条，会出现options请求，不能使用app.post
+app.use('/login', (req, res) => {
     //Some browser extensions remove origin and referer from the http-request headers
     // req.headers['origin'] == 'null' || /^https?:\/\/(\w+\.)+aaa\.com/.test(req.headers['origin'])
     // req.headers['origin'] == 'null' || req.headers['origin'].startsWith('http://localhost')
