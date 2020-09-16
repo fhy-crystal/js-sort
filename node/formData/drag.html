@@ -12,28 +12,32 @@
             color: midnightblue;
             line-height: 150px;
             text-align: center;
+            display: none;
         }
     </style>
     <script>
         window.onload = () => {
             let $box = document.getElementById('box');
+            let timer;
             // 拖着东西进入
-            $box.ondragenter = () => {
+            $box.addEventListener('dragenter', () => {
                 $box.innerHTML = '松手上传';
-            }
+            }, false);
             // 拖着东西离开
-            $box.ondragleave = () => {
+            $box.addEventListener('dragleave', () => {
                 $box.innerHTML = '请拖到这里';
-            }
+            }, false);
             // 悬浮: 只要鼠标还没松手并且未离开，就会一直触发
-            $box.ondragover = () => {
-                console.log('aaa');
-
-                // ondragover 不阻止默认事件，就不会触发ondrop
-                return false;
-            }
+            document.addEventListener('dragover', e => {
+                clearTimeout(timer);
+                $box.style.display = 'block';
+                timer = setTimeout(() => {
+                    $box.style.display = 'none';
+                }, 300);
+                e.preventDefault();
+            }, false);
             // 松手
-            $box.ondrop = (e) => {
+            $box.addEventListener('drop', e => {
                 let data = new FormData();
                 Array.from(e.dataTransfer.files).forEach(item => {
                     data.append('files', item);
@@ -46,16 +50,15 @@
 
                 xhr.onreadystatechange = () => {
                     if (xhr.readyState == 4) {
-                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) { 
+                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status==304) { 
                             console.log('success'); 
                         } else {
-                            console.log('failed');
-                        }
-                    }
+                            console.log('failed'); 
+                        } 
+                    } 
                 }
-                // 阻止默认事件：打开文件
-                return false;
-            }
+                e.preventDefault();
+            }, false);
         }
     </script>
 </head>
